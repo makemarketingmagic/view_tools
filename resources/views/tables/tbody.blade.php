@@ -1,0 +1,1 @@
+<tbody{!! $attributes !!}>{!! $content !!}</tbody>

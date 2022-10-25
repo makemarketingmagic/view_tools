@@ -1,0 +1,23 @@
+{
+    "name": "makemarketingmagic/view_tools",
+    "description": "View tools for easing the frontend headache",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Makemarketingmagic\\ViewTools\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alfons de Graaf",
+            "email": "alfons@makemarketingmagic.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^8.0",
+        "illuminate/support": "^5.5|^6|^7|^8"
+    }
+}

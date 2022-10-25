@@ -1,0 +1,1 @@
+<table{!! $attributes !!}>{!! $content !!}</table>

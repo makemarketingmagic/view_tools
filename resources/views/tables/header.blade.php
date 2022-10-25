@@ -1,0 +1,1 @@
+<th{!! $attributes !!}>{!! $content !!}</th>

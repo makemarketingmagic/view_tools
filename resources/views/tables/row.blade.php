@@ -1,0 +1,1 @@
+<tr{!! $attributes !!}>{!! $content !!}</tr>
