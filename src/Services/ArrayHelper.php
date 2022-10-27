@@ -2,16 +2,42 @@
 
 namespace Makemarketingmagic\ViewTools\Services;
 
+use Closure;
 use function explode;
 use function strpos;
 
 class ArrayHelper
 {
-    public function get($key, $array, $default = null) {
+
+    /**
+     * @param string $key
+     * @param array $array
+     * @param mixed|null $default
+     * @return mixed
+     */
+    public function get(string $key, array $array, mixed $default = null)
+    {
         return $this->resolve($key, $array, $default);
     }
 
-    private function resolve($key, $array, $default = null) {
+    public function has(string $key, array $array)
+    {
+        $result = true;
+        $default = function () use (&$result) {
+            $result = false;
+        };
+        $this->resolve($key, $array, $default);
+        return $result;
+    }
+
+    /**
+     * @param string $key
+     * @param array $array
+     * @param mixed|null $default
+     * @return mixed
+     */
+    private function resolve(string $key, array $array, mixed $default = null): mixed
+    {
         $dotPos = strpos($key, '.');
         if ($dotPos !== false) {
             $keyParts = explode('.', $key, 2);
@@ -19,7 +45,10 @@ class ArrayHelper
             $key = $keyParts[1];
             return $this->resolve($key, $array, $default);
         } else {
-            return $array[$key] ?? $default;
+            if (array_key_exists($key, $array)) {
+                return $array[$key];
+            }
+            return ($default instanceof Closure) ? $default() : $default;
         }
     }
 }
