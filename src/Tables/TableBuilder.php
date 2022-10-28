@@ -77,6 +77,7 @@ class TableBuilder
      */
     public function toTable(): string
     {
+        dump($this->rows);
         if (empty($this->rows)) {
             return view($this->views['empty']);
         }
@@ -134,7 +135,7 @@ class TableBuilder
                 $attributes = [];
                 if ($column instanceof Column) {
                     $attributes = $column->getAttributes();
-                    dump($column->getField(), $row);exit;;
+                    //dump($column->getField(), $row);exit;;
                     $column = $this->arrayHelper->get($column->getField(), $row);
                 }
                 $renderedRow .= $this->formatCell($key, $column, $attributes);
@@ -229,7 +230,7 @@ class TableBuilder
             $content = '[array]';
         }
         if ($content instanceof Column) {
-            $content = '[column]';
+            $content = '[column]' . $content->getField();
         }
         return view($this->views['cell'], [
             'content' => $content,

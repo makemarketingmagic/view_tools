@@ -3,10 +3,11 @@
 namespace Makemarketingmagic\ViewTools\Tables;
 
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
+use Makemarketingmagic\ViewTools\Services\ArrayHelper;
 use Throwable;
 use function array_keys;
 
@@ -18,7 +19,7 @@ class ModelTableBuilder extends TableBuilder
 
     protected $limit;
 
-    protected $columns = [];
+    protected array $columns = [];
 
     public function toTable(): string
     {
@@ -48,11 +49,12 @@ class ModelTableBuilder extends TableBuilder
 
     public function row(array $row, $rowId = null): TableBuilder
     {
+        //dump($row);
         if (!empty($this->columns)) {
             $result = [];
-//            $arrayHelper = new ArrayHelper();
+            $arrayHelper = new ArrayHelper();
             foreach ($this->columns as $column) {
-                $result[$column->getField()] = $column;//$arrayHelper->get($column->getField(), $row);
+                $result[$column->getField()] = $arrayHelper->get($column->getField(), $row);
             }
         } else {
             $result = $row;
