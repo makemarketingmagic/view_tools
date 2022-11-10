@@ -17,10 +17,10 @@ class Attribute
      */
     public static function str(array $attributes): string
     {
-        $result = " ";
+        $result = "";
         if (!empty($attributes)) {
             foreach ($attributes as $key => $value) {
-                $result .= $key . '="' . $value . '"';
+                $result .= ' '  . $key . '="' . $value . '"';
             }
         }
         return $result;

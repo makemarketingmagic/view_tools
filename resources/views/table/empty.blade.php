@@ -1,1 +1,1 @@
-<div>No results</div>
+<div>{!! $content !!}</div>

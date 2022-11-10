@@ -1,1 +1,1 @@
-<td {!! $attributes !!}>{!! $content !!}</td>
+<td{!! $attributes !!}>{!! $content !!}</td>

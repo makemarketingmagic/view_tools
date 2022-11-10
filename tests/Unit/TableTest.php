@@ -2,6 +2,7 @@
 
 namespace Makemarketingmagic\ViewTools\Tests\Unit;
 
+use DOMDocument;
 use Makemarketingmagic\ViewTools\Table\Table;
 use Makemarketingmagic\ViewTools\Table\TableCell;
 use Makemarketingmagic\ViewTools\Table\TableColumn;
@@ -39,6 +40,30 @@ class TableTest extends TestCase
             $table->addRow(new TableRow($cells, $attrs));
         }
         $html = $table->html();
-       // file_put_contents('output.html', $html);
+        $this->assertSame($this->expectedResult, $html);
+
+//         file_put_contents('output.html', $html);
     }
+
+    protected string $expectedResult = <<<EOF
+<div class="before">before text</div>
+<table id="post-table"><thead id="post-table-head" class="headers"><tr><th class="id-column">ID</th>
+<th class="title-column">TITLE</th>
+</tr></thead>
+<tbody id="post-table-body" class="body"><tr id="post-1"><td class="id-cell">1</td>
+<td class="title-cell">Title 1</td>
+</tr>
+<tr id="post-2"><td class="id-cell">2</td>
+<td class="title-cell">Title 2</td>
+</tr>
+<tr id="post-3"><td class="id-cell">3</td>
+<td class="title-cell">Title 3</td>
+</tr>
+</tbody>
+<tfoot></tfoot>
+</table>
+<div class="after">after text</div>
+
+EOF;
+
 }

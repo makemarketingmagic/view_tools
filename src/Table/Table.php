@@ -117,10 +117,16 @@ class Table
      */
     public function html(): string
     {
-        $html = view(config('view_tools_tables.views.table'), [
-            'content' => $this->headHtml() . $this->bodyHtml() . $this->footHtml(),
-            'attributes' => Attribute::str($this->attributes['table'])
-        ])->render();
+        if (empty($this->rows)) {
+            $html = view(config('view_tools_tables.views.empty'), [
+                'content' => config('view_tools_tables.noResultsText')
+            ])->render();
+        } else {
+            $html = view(config('view_tools_tables.views.table'), [
+                'content' => $this->headHtml() . $this->bodyHtml() . $this->footHtml(),
+                'attributes' => Attribute::str($this->attributes['table'])
+            ])->render();
+        }
         return
             $this->beforeHtml() .
             $html .
@@ -205,6 +211,9 @@ class Table
      */
     protected function headHtml(): string
     {
+        if (empty($this->columns)) {
+            return '';
+        }
         $html = '';
         foreach ($this->columns as $col) {
             $html .= $col->html();
@@ -222,6 +231,9 @@ class Table
      */
     protected function bodyHtml(): string
     {
+        if (empty($this->rows)) {
+            return '';
+        }
         $html = '';
         foreach ($this->rows as $row) {
             $html .= $row->html();
