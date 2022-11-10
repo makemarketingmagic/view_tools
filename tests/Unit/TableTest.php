@@ -9,6 +9,7 @@ use Makemarketingmagic\ViewTools\Table\TableColumn;
 use Makemarketingmagic\ViewTools\Table\TableRow;
 use Makemarketingmagic\ViewTools\Tests\TestCase;
 use function file_put_contents;
+use function is_numeric;
 
 class TableTest extends TestCase
 {
@@ -29,7 +30,8 @@ class TableTest extends TestCase
             ->before('before text', ['class' => 'before'])
             ->after('after text', ['class' => 'after'])
             ->addColumn('id', new TableColumn('ID', ['class' => 'id-column']))
-            ->addColumn('title', new TableColumn('TITLE', ['class' => 'title-column']));
+            ->addColumn('title', new TableColumn('TITLE', ['class' => 'title-column']))
+            ->setCellFormatter(fn($key, $value) => $key == 'id' ? "#" . $value: $value);
         foreach ($posts as $post) {
             $cells = [
                 'id' => new TableCell($post['id'], ['class' => 'id-cell']),
@@ -51,13 +53,13 @@ class TableTest extends TestCase
 <table id="post-table"><thead id="post-table-head" class="headers"><tr><th class="id-column">ID</th>
 <th class="title-column">TITLE</th>
 </tr></thead>
-<tbody id="post-table-body" class="body"><tr id="post-1"><td class="id-cell">1</td>
+<tbody id="post-table-body" class="body"><tr id="post-1"><td class="id-cell">#1</td>
 <td class="title-cell">Title 1</td>
 </tr>
-<tr id="post-2"><td class="id-cell">2</td>
+<tr id="post-2"><td class="id-cell">#2</td>
 <td class="title-cell">Title 2</td>
 </tr>
-<tr id="post-3"><td class="id-cell">3</td>
+<tr id="post-3"><td class="id-cell">#3</td>
 <td class="title-cell">Title 3</td>
 </tr>
 </tbody>

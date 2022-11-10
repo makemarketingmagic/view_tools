@@ -3,6 +3,7 @@
 namespace Makemarketingmagic\ViewTools\Table;
 
 use JetBrains\PhpStorm\ArrayShape;
+use function is_callable;
 
 /**
  * Cell of a table row
@@ -54,14 +55,30 @@ class TableCell
     }
 
     /**
-     * Returns row html
+     * Returns row content
      *
      * @return string
      */
-    public function html(): string
+    public function getContent(): string
     {
+        return $this->content;
+    }
+
+    /**
+     * Returns row html
+     *
+     * @param int|string $key
+     * @param callable|null $callback
+     * @return string
+     */
+    public function html(int|string $key, callable $callback = null): string
+    {
+        $content = $this->content;
+        if (is_callable($callback)) {
+            $content = $callback($key, $content);
+        }
         return view(config('view_tools_tables.views.cell'), [
-            'content' => $this->content,
+            'content' => $content,
             'attributes' => Attribute::str($this->attributes)
         ])->render();
     }

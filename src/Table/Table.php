@@ -2,7 +2,9 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
+use Makemarketingmagic\ViewTools\Tables\TableBuilder;
 use function array_merge_recursive;
+use function is_callable;
 
 /**
  * Main Table class, you can add columns and rows to it
@@ -56,6 +58,11 @@ class Table
     protected string $after = '';
 
     /**
+     * @var array callbacks for custom cell rendering
+     */
+    protected array $callbacks = [];
+
+    /**
      * Constructor
      *
      * @param array $attributes
@@ -78,6 +85,16 @@ class Table
     public function addColumn(string $name, TableColumn $column): static
     {
         $this->columns[$name] = $column;
+        return $this;
+    }
+
+    /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function setCellFormatter(callable $callback): static
+    {
+        $this->callbacks['cell'] = $callback;
         return $this;
     }
 
@@ -243,8 +260,13 @@ class Table
             return '';
         }
         $html = '';
+        /** @var TableRow $row */
         foreach ($this->rows as $row) {
-            $html .= $row->html();
+            $callback = null;
+            if (!empty($this->callbacks['cell'])) {
+                $callback = $this->callbacks['cell'];
+            }
+            $html .= $row->html($callback);
         }
         return view(config('view_tools_tables.views.body'), [
             'content' => $html,

@@ -2,6 +2,8 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
+use function is_callable;
+
 /**
  * Table row class
  *
@@ -67,20 +69,21 @@ class TableRow
     /**
      * Returns html of row
      *
+     * @param callable|null $callback
      * @return string
      */
-    public function html(): string
+    public function html(callable $callback = null): string
     {
         $result = '';
         $html = '';
         if ($this->table) {
             $columns = $this->table->getColumns();
             foreach ($columns as $key => $column) {
-                $html .= isset($this->cells[$key]) ? $this->cells[$key]->html() : '';
+                $html .= isset($this->cells[$key]) ? $this->cells[$key]->html($key, $callback) : '';
             }
         } else {
-            foreach ($this->cells as $cell) {
-                $html .= $cell->html();
+            foreach ($this->cells as $key => $cell) {
+                $html .= $cell->html($key, $callback);
             }
         }
         $result .= view(config('view_tools_tables.views.row'), [
