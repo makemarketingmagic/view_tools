@@ -25,10 +25,11 @@ class TableTest extends TestCase
             'head' => ['id' => 'post-table-head', 'class' => 'headers'],
             'body' => ['id' => 'post-table-body', 'class' => 'body'],
         ]);
-        $table->before('before text', ['class' => 'before']);
-        $table->after('after text', ['class' => 'after']);
-        $table->addColumn('id', new TableColumn('ID', ['class' => 'id-column']));
-        $table->addColumn('title', new TableColumn('TITLE', ['class' => 'title-column']));
+        $table
+            ->before('before text', ['class' => 'before'])
+            ->after('after text', ['class' => 'after'])
+            ->addColumn('id', new TableColumn('ID', ['class' => 'id-column']))
+            ->addColumn('title', new TableColumn('TITLE', ['class' => 'title-column']));
         foreach ($posts as $post) {
             $cells = [
                 'id' => new TableCell($post['id'], ['class' => 'id-cell']),

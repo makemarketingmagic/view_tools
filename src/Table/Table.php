@@ -73,10 +73,12 @@ class Table
      *
      * @param string $name
      * @param TableColumn $column
+     * @return Table
      */
-    public function addColumn(string $name, TableColumn $column)
+    public function addColumn(string $name, TableColumn $column): static
     {
         $this->columns[$name] = $column;
+        return $this;
     }
 
     /**
@@ -93,11 +95,13 @@ class Table
      * Adds a new Row
      *
      * @param TableRow $row
+     * @return Table
      */
-    public function addRow(TableRow $row)
+    public function addRow(TableRow $row): static
     {
         $row->setTable($this);
         $this->rows[] = $row;
+        return $this;
     }
 
     /**
@@ -136,21 +140,25 @@ class Table
     /**
      * @param string $content
      * @param array $attributes
+     * @return Table
      */
-    public function before(string $content, array $attributes = [])
+    public function before(string $content, array $attributes = []): static
     {
         $this->before = $content;
         $this->attributes['before'] = $attributes;
+        return $this;
     }
 
     /**
      * @param string $content
      * @param array $attributes
+     * @return Table
      */
-    public function after(string $content, array $attributes = [])
+    public function after(string $content, array $attributes = []): static
     {
         $this->after = $content;
         $this->attributes['after'] = $attributes;
+        return $this;
     }
 
     /**
