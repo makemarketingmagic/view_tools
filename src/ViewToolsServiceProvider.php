@@ -14,6 +14,7 @@ class ViewToolsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'view_tools');
+
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/view_tools'),
         ], ['views']);
@@ -30,6 +31,6 @@ class ViewToolsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->mergeConfigFrom(__DIR__.'/../config/view_tools_tables.php', 'view_tools_tables');
     }
 }

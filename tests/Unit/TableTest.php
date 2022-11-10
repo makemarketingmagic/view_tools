@@ -4,10 +4,11 @@ namespace Makemarketingmagic\ViewTools\Tests\Unit;
 
 use Makemarketingmagic\ViewTools\Tests\TestCase;
 
-class SomeUnitTest extends TestCase
+class TableTest extends TestCase
 {
-    public function testUnit()
+
+    public function testTable()
     {
-        $this->assertTrue(true);
+
     }
 }

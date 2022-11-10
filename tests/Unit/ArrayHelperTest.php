@@ -10,7 +10,6 @@ class ArrayHelperTest extends TestCase
 
     public function testNestedKeys()
     {
-
         $data = [
             'nothing' => null,
             'nope' => false,
