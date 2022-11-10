@@ -77,10 +77,11 @@ class TableCell
         if (is_callable($callback)) {
             $content = $callback($key, $content);
         }
-        return view(config('view_tools_tables.views.cell'), [
+        $result = view(config('view_tools_tables.views.cell'), [
             'content' => $content,
             'attributes' => Attribute::str($this->attributes)
         ])->render();
+        return trim($result);
     }
 
     /**

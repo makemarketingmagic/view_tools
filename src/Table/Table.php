@@ -5,6 +5,7 @@ namespace Makemarketingmagic\ViewTools\Table;
 use Makemarketingmagic\ViewTools\Tables\TableBuilder;
 use function array_merge_recursive;
 use function is_callable;
+use function trim;
 
 /**
  * Main Table class, you can add columns and rows to it
@@ -150,7 +151,7 @@ class Table
         }
         return
             $this->beforeHtml() .
-            $html .
+            trim($html) .
             $this->afterHtml();
     }
 
@@ -207,10 +208,11 @@ class Table
         if (empty($this->before)) {
             return '';
         }
-        return view(config('view_tools_tables.views.before'), [
+        $result = view(config('view_tools_tables.views.before'), [
             'content' => $this->before,
             'attributes' => Attribute::str($this->attributes['before'])
         ])->render();
+        return trim($result);
     }
 
     /**
@@ -223,10 +225,11 @@ class Table
         if (empty($this->after)) {
             return '';
         }
-        return view(config('view_tools_tables.views.after'), [
+        $result = view(config('view_tools_tables.views.after'), [
             'content' => $this->after,
             'attributes' => Attribute::str($this->attributes['after'])
         ])->render();
+        return trim($result);
     }
 
     /**
@@ -241,12 +244,13 @@ class Table
         }
         $html = '';
         foreach ($this->columns as $col) {
-            $html .= $col->html();
+            $html .= $col->html() . "\n";
         }
-        return view(config('view_tools_tables.views.headers'), [
+        $result = view(config('view_tools_tables.views.headers'), [
             'content' => $html,
             'attributes' => Attribute::str($this->attributes['head'])
         ])->render();
+        return trim($result);
     }
 
     /**
@@ -266,12 +270,13 @@ class Table
             if (!empty($this->callbacks['cell'])) {
                 $callback = $this->callbacks['cell'];
             }
-            $html .= $row->html($callback);
+            $html .= $row->html($callback) . "\n";
         }
-        return view(config('view_tools_tables.views.body'), [
+        $result = view(config('view_tools_tables.views.body'), [
             'content' => $html,
             'attributes' => Attribute::str($this->attributes['body'])
         ])->render();
+        return trim($result);
     }
 
     /**
@@ -281,6 +286,7 @@ class Table
      */
     protected function footHtml(): string
     {
-        return view(config('view_tools_tables.views.footer'))->render();
+        $result = view(config('view_tools_tables.views.footer'))->render();
+        return trim($result);
     }
 }

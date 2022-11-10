@@ -76,7 +76,7 @@ class TableRow
     {
         $result = '';
         $html = '';
-        if ($this->table) {
+        if ($this->table && !empty($this->table->getColumns())) {
             $columns = $this->table->getColumns();
             foreach ($columns as $key => $column) {
                 $html .= isset($this->cells[$key]) ? $this->cells[$key]->html($key, $callback) : '';
@@ -90,7 +90,7 @@ class TableRow
             'content' => $html,
             'attributes' => Attribute::str($this->attributes)
         ])->render();
-        return $result;
+        return trim($result);
     }
 
     /**

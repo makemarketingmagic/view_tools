@@ -2,6 +2,8 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
+use function trim;
+
 /**
  * Table column class
  *
@@ -39,12 +41,13 @@ class TableColumn
      *
      * @return string
      */
-    public function html()
+    public function html(): string
     {
-        return view(config('view_tools_tables.views.header'), [
+        $result = view(config('view_tools_tables.views.header'), [
             'content' => $this->content,
             'attributes' => Attribute::str($this->attributes)
         ])->render();
+        return trim($result);
     }
 
     /**
@@ -52,7 +55,7 @@ class TableColumn
      *
      * @return array
      */
-    public function array()
+    public function array(): array
     {
         return [
             'content' => $this->content,
