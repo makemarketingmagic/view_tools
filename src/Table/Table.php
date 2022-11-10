@@ -2,18 +2,27 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
+use function array_merge_recursive;
+
 /**
  * Main Table class, you can add columns and rows to it
  *
  */
 class Table
 {
+
     /**
-     * Table tag attributes
+     * Tag attributes
      *
      * @var array
      */
-    protected array $attributes = [];
+    protected array $attributes = [
+        'table' => [],
+        'head' => [],
+        'body' => [],
+        'before' => [],
+        'after' => []
+    ];
 
     /**
      * Table columns
@@ -42,23 +51,9 @@ class Table
     protected string $before = '';
 
     /**
-     * Before tag attributes
-     *
-     * @var array
-     */
-    protected array $beforeAttributes = [];
-
-    /**
      * Appended html after table
      */
     protected string $after = '';
-
-    /**
-     * After tag attributes
-     *
-     * @var array
-     */
-    protected array $afterAttributes = [];
 
     /**
      * Constructor
@@ -67,7 +62,10 @@ class Table
      */
     public function __construct(array $attributes = [])
     {
-        $this->attributes = $attributes;
+        if (!isset($attributes['table'])) {
+            $attributes['table'] = $attributes;
+        }
+        $this->attributes = array_merge_recursive($this->attributes, $attributes);
     }
 
     /**
@@ -119,16 +117,13 @@ class Table
      */
     public function html(): string
     {
-        $html =
-            $this->headHtml() .
-            $this->bodyHtml() .
-            $this->footHtml();
+        $html = view(config('view_tools_tables.views.table'), [
+            'content' => $this->headHtml() . $this->bodyHtml() . $this->footHtml(),
+            'attributes' => Attribute::str($this->attributes['table'])
+        ])->render();
         return
             $this->beforeHtml() .
-            view(config('view_tools_tables.views.table'), [
-                'content' => $html,
-                'attributes' => Attribute::str($this->attributes)
-            ])->render() .
+            $html .
             $this->afterHtml();
     }
 
@@ -139,7 +134,7 @@ class Table
     public function before(string $content, array $attributes = [])
     {
         $this->before = $content;
-        $this->beforeAttributes = $attributes;
+        $this->attributes['before'] = $attributes;
     }
 
     /**
@@ -149,7 +144,7 @@ class Table
     public function after(string $content, array $attributes = [])
     {
         $this->after = $content;
-        $this->afterAttributes = $attributes;
+        $this->attributes['after'] = $attributes;
     }
 
     /**
@@ -183,7 +178,7 @@ class Table
         }
         return view(config('view_tools_tables.views.before'), [
             'content' => $this->before,
-            'attributes' => Attribute::str($this->beforeAttributes)
+            'attributes' => Attribute::str($this->attributes['before'])
         ])->render();
     }
 
@@ -199,7 +194,7 @@ class Table
         }
         return view(config('view_tools_tables.views.after'), [
             'content' => $this->after,
-            'attributes' => Attribute::str($this->afterAttributes)
+            'attributes' => Attribute::str($this->attributes['after'])
         ])->render();
     }
 
@@ -208,7 +203,7 @@ class Table
      *
      * @return string
      */
-    public function headHtml(): string
+    protected function headHtml(): string
     {
         $html = '';
         foreach ($this->columns as $col) {
@@ -216,7 +211,7 @@ class Table
         }
         return view(config('view_tools_tables.views.headers'), [
             'content' => $html,
-            'attributes' => Attribute::str($this->attributes)
+            'attributes' => Attribute::str($this->attributes['head'])
         ])->render();
     }
 
@@ -225,7 +220,7 @@ class Table
      *
      * @return string
      */
-    public function bodyHtml(): string
+    protected function bodyHtml(): string
     {
         $html = '';
         foreach ($this->rows as $row) {
@@ -233,7 +228,7 @@ class Table
         }
         return view(config('view_tools_tables.views.body'), [
             'content' => $html,
-            'attributes' => Attribute::str($this->attributes)
+            'attributes' => Attribute::str($this->attributes['body'])
         ])->render();
     }
 
@@ -242,7 +237,7 @@ class Table
      *
      * @return string
      */
-    public function footHtml(): string
+    protected function footHtml(): string
     {
         return view(config('view_tools_tables.views.footer'))->render();
     }

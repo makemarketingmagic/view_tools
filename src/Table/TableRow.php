@@ -101,11 +101,9 @@ class TableRow
             'cells' => [],
             'attributes' => $this->attributes
         ];
-
         foreach ($this->cells as $name => $cell) {
             $data['cells'][$name] = $cell->array();
         }
-
         return $data;
     }
 }
