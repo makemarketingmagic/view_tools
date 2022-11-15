@@ -2,8 +2,8 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
-use JetBrains\PhpStorm\ArrayShape;
 use function is_callable;
+use function is_null;
 
 /**
  * Cell of a table row
@@ -21,9 +21,9 @@ class TableCell
     /**
      * Content of cell
      *
-     * @var string
+     * @var array|string|null
      */
-    protected string $content;
+    protected array|string|null $content;
 
     /**
      * Attributes of td element
@@ -76,6 +76,9 @@ class TableCell
         $content = $this->content;
         if (is_callable($callback)) {
             $content = $callback($key, $content);
+        }
+        if (is_null($content)) {
+            $content = config('view_tools_tables.nullValue');
         }
         $result = view(config('view_tools_tables.views.cell'), [
             'content' => $content,
