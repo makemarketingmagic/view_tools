@@ -3,6 +3,7 @@
 namespace Makemarketingmagic\ViewTools\Services;
 
 use Closure;
+use Makemarketingmagic\ViewTools\Table\TableCell;
 use function explode;
 use function strpos;
 
@@ -43,6 +44,9 @@ class ArrayHelper
             $keyParts = explode('.', $key, 2);
             $array = $array[$keyParts[0]];
             $key = $keyParts[1];
+            if ($array instanceof TableCell) {
+                $array = $array->getContent();
+            }
             return $this->resolve($key, $array, $default);
         } else {
             if (array_key_exists($key, $array)) {

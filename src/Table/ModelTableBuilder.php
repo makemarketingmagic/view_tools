@@ -63,6 +63,7 @@ class ModelTableBuilder
     {
         if (empty($this->columns)) {
             $this->setDefaultColumns($row);
+            return;
         }
         foreach ($this->columns as $key => $column) {
             $this->table->addColumn($key, $column);

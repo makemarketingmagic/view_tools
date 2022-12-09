@@ -2,8 +2,11 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
+use Str;
+use function is_array;
 use function is_callable;
 use function is_null;
+use function json_encode;
 
 /**
  * Cell of a table row
@@ -35,10 +38,10 @@ class TableCell
     /**
      * Class constructor
      *
-     * @param string $content
+     * @param string|null $content
      * @param array $attributes
      */
-    public function __construct(string $content, array $attributes = [])
+    public function __construct($content, array $attributes = [])
     {
         $this->content = $content;
         $this->attributes = $attributes;
@@ -57,9 +60,18 @@ class TableCell
     /**
      * Returns row content
      *
-     * @return string
+     * @return array|string|null
      */
-    public function getContent(): string
+    public function getContent(): array|string|null
+    {
+        return $this->content;
+    }
+
+    /**
+     * Sets row content
+     *
+     */
+    public function setContent(array|string $content = null)
     {
         return $this->content;
     }
@@ -79,6 +91,9 @@ class TableCell
         }
         if (is_null($content)) {
             $content = config('view_tools_tables.nullValue');
+        }
+        if (is_array($content)) {
+            $content = $key . '::' . $content['id'];
         }
         $result = view(config('view_tools_tables.views.cell'), [
             'content' => $content,

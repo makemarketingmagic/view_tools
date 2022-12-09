@@ -2,7 +2,7 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
-use function is_callable;
+use Makemarketingmagic\ViewTools\Services\ArrayHelper;
 
 /**
  * Table row class
@@ -79,7 +79,17 @@ class TableRow
         if ($this->table && !empty($this->table->getColumns())) {
             $columns = $this->table->getColumns();
             foreach ($columns as $key => $column) {
-                $html .= isset($this->cells[$key]) ? $this->cells[$key]->html($key, $callback) : '';
+                if (isset($this->cells[$key])) {
+                    $html .= $this->cells[$key]->html($key, $callback);
+                } else {
+                    $arrayHelper = new ArrayHelper();
+                    $foo = $arrayHelper->get($key, $this->cells);
+                    if ($foo instanceof TableCell) {
+                        $html .= $foo->html($key, $callback);
+                    } else {
+                        $html .= (new TableCell($foo))->html($key, $callback);
+                    }
+                }
             }
         } else {
             foreach ($this->cells as $key => $cell) {
