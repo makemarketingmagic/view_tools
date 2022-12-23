@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use function config;
 
 class ModelTableBuilder
 {
@@ -27,12 +28,15 @@ class ModelTableBuilder
 
     /**
      * @param string|int $key
-     * @param string $caption
+     * @param string|null $caption
      * @param array $attributes
      * @return $this
      */
-    public function column(string|int $key, string $caption, array $attributes = []): static
+    public function column(string|int $key, string $caption = null, array $attributes = []): static
     {
+        if (empty($caption)) {
+            $caption = Str::headline($key);
+        }
         $this->columns[$key] = new TableColumn($caption, $attributes);
         return $this;
     }
@@ -70,12 +74,18 @@ class ModelTableBuilder
         }
     }
 
-    public function toHtml(): string
+    /**
+     * @param int|null $limit
+     * @return string
+     */
+    public function toHtml(int $limit = null): string
     {
-        $this->table = new Table();
-        // todo: get limit from somewhere meaningful...
-        $limit = 3;
+        if (empty($limit)) {
+            $limit = config('pagination.limit');
+        }
+        $this->table = new Table(['class' => 'model-table']);
         $rows = $this->query->paginate($limit);
+        $this->table->before($rows->onEachSide(2)->render());
         if (!empty($this->cellFormatter)) {
             $this->table->setCellFormatter($this->cellFormatter);
         }
@@ -91,7 +101,10 @@ class ModelTableBuilder
             foreach ($rowData as $key => $field) {
                 $cells[$key] = new TableCell($field);
             }
-            $this->table->addRow(new TableRow($cells, ['id' => 'row-' . $rowData['id']]));
+            $this->table->addRow(new TableRow($cells, [
+                'id' => 'row-' . $rowData['id'],
+                'data-row-id' => $rowData['id']
+            ]));
         }
         return $this->table->html();
     }
