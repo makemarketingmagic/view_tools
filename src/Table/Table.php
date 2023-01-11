@@ -2,9 +2,7 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
-use Makemarketingmagic\ViewTools\Tables\TableBuilder;
 use function array_merge_recursive;
-use function is_callable;
 use function trim;
 
 /**

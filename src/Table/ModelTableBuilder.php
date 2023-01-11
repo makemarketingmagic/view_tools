@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Makemarketingmagic\ViewTools\Services\ArrayHelper;
 use function config;
 
 class ModelTableBuilder
@@ -97,14 +98,20 @@ class ModelTableBuilder
                 $first = false;
                 $this->setColumns($row);
             }
-            $cells = [];
-            foreach ($rowData as $key => $field) {
-                $cells[$key] = new TableCell($field);
-            }
-            $this->table->addRow(new TableRow($cells, [
+
+            $row = new TableRow([], [
                 'id' => 'row-' . $rowData['id'],
                 'data-row-id' => $rowData['id']
-            ]));
+            ]);
+            $arrayHelper = new ArrayHelper();
+            foreach ($this->columns as $key => $column) {
+                if ($key == '__model') {
+                    $row->addCell($key, new TableCell($rowData));
+                } else {
+                    $row->addCell($key, new TableCell($arrayHelper->get($key, $rowData)));
+                }
+            }
+            $this->table->addRow($row);
         }
         return $this->table->html();
     }

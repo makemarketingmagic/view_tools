@@ -2,11 +2,9 @@
 
 namespace Makemarketingmagic\ViewTools\Table;
 
-use Str;
 use function is_array;
 use function is_callable;
 use function is_null;
-use function json_encode;
 
 /**
  * Cell of a table row
@@ -51,10 +49,12 @@ class TableCell
      * Sets parent TableRow
      *
      * @param TableRow $row
+     * @return TableCell
      */
     public function setRow(TableRow $row)
     {
         $this->row = $row;
+        return $this;
     }
 
     /**

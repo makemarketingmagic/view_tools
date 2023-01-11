@@ -20,7 +20,7 @@ class Attribute
         $result = "";
         if (!empty($attributes)) {
             foreach ($attributes as $key => $value) {
-                $result .= ' '  . $key . '="' . $value . '"';
+                $result .= ' ' . $key . '="' . $value . '"';
             }
         }
         return $result;

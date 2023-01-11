@@ -58,6 +58,7 @@ class TableRow
     /**
      * Adds a new cell to row
      *
+     * @param string $key
      * @param TableCell $cell
      */
     public function addCell(string $key, TableCell $cell)
@@ -87,7 +88,7 @@ class TableRow
                     if ($foo instanceof TableCell) {
                         $html .= $foo->html($key, $callback);
                     } else {
-                        $html .= (new TableCell($foo))->html($key, $callback);
+                        $html .= (new TableCell($foo))->setRow($this)->html($key, $callback);
                     }
                 }
             }
