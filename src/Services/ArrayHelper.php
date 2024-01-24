@@ -37,7 +37,7 @@ class ArrayHelper
      * @param mixed|null $default
      * @return mixed
      */
-    private function resolve(string $key, array $array, mixed $default = null): mixed
+    private function resolve(string $key, array $array = [], mixed $default = null): mixed
     {
         $dotPos = strpos($key, '.');
         if ($dotPos !== false) {
