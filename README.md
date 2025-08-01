@@ -1,4 +1,4 @@
-# View tools for Laravel 8.
+# View tools for Laravel 9.
 
 Easy creation of html horror shows in Laravel.
 > **NOTE:** parental discretion advised
@@ -50,9 +50,9 @@ php artisan vendor:publish --provider="Makemarketingmagic\ViewTools\ViewToolsSer
 ## Use
 ```
 Not sure yet, but ......
-    $tableBuilder = new TableBuilder();
+    $tableBuilder = new ModelTableBuilder();
     $table = $tableBuilder
-        ->rows($someArrayOfArrays)
+        ->query($model)
         ->toTable();
     return view('some_view', ['table' => $table]);
 ... and so on...
