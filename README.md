@@ -1,4 +1,4 @@
-# View tools for Laravel 11.
+# View tools for Laravel 12.
 
 Easy creation of html horror shows in Laravel.
 > **NOTE:** parental discretion advised

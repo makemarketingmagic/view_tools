@@ -22,11 +22,11 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.45",
-        "illuminate/support": "^10.0|^11.0"
+        "laravel/framework": "^12.25",
+        "illuminate/support": "^11.0|^12.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5",
-        "orchestra/testbench": "^9.14"
+        "phpunit/phpunit": "^11.5.3",
+        "orchestra/testbench": "^10.4"
     }
 }
